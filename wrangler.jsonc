@@ -4,12 +4,14 @@
   "main": "src/worker.js",
   "compatibility_date": "2026-06-22",
   "assets": {
-    "directory": ".",
+    "directory": "public",
     "binding": "ASSETS",
     "not_found_handling": "single-page-application"
   },
   "observability": {
     "enabled": true,
-    "logs": { "enabled": true }
+    "logs": {
+      "enabled": true
+    }
   }
 }
