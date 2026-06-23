@@ -1,33 +1,24 @@
-# charliechandler.net clean one-page site
+# charliechandler.net v0.6
 
-Clean one-page Cloudflare Worker site.
+One-page Cloudflare Worker site.
 
-## Files
+## Structure
 
-- `index.html` - terminal-style one-page website
-- `src/worker.js` - Worker API route for `/api/cyber-news`
-- `wrangler.jsonc` - Wrangler deploy configuration
+- public/index.html
+- src/worker.js
+- wrangler.jsonc
 
-## Cloudflare settings
+## Deploy settings
 
-Use this build configuration:
-
-- Root directory: `/`
+- Root directory: /
 - Build command: blank
-- Deploy command: `npx wrangler deploy`
+- Deploy command: npx wrangler deploy
 
-If you keep these files inside a folder such as `charliechandler-site`, then set:
+## Routes
 
-- Root directory: `charliechandler-site`
+- charliechandler.net/*
 
-## Test after deployment
+## Test routes
 
-Open:
-
-`https://charliechandler.net/api/cyber-news`
-
-You should see JSON.
-
-Then open:
-
-`https://charliechandler.net`
+- /api/ping
+- /api/cyber-news

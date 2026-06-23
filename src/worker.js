@@ -1,24 +1,9 @@
 const FEEDS = [
-  {
-    name: "BleepingComputer",
-    url: "https://www.bleepingcomputer.com/feed/"
-  },
-  {
-    name: "The Hacker News",
-    url: "https://feeds.feedburner.com/TheHackersNews?format=xml"
-  },
-  {
-    name: "SANS ISC",
-    url: "https://isc.sans.edu/rssfeed.xml"
-  },
-  {
-    name: "KrebsOnSecurity",
-    url: "https://krebsonsecurity.com/feed/"
-  },
-  {
-    name: "CISA Advisories",
-    url: "https://www.cisa.gov/cybersecurity-advisories/all.xml"
-  }
+  { name: "BleepingComputer", url: "https://www.bleepingcomputer.com/feed/" },
+  { name: "The Hacker News", url: "https://feeds.feedburner.com/TheHackersNews?format=xml" },
+  { name: "SANS ISC", url: "https://isc.sans.edu/rssfeed.xml" },
+  { name: "KrebsOnSecurity", url: "https://krebsonsecurity.com/feed/" },
+  { name: "CISA Advisories", url: "https://www.cisa.gov/cybersecurity-advisories/all.xml" }
 ];
 
 const ARTICLES_PER_SOURCE = 5;
@@ -57,13 +42,9 @@ function getAtomLink(item) {
 }
 
 function parseRssItems(xml, feed) {
-  const items = xml
-    .split(/<item\b[^>]*>/i)
-    .slice(1)
-    .map(function (item) {
-      return item.split(/<\/item>/i)[0];
-    });
-
+  const items = xml.split(/<item\b[^>]*>/i).slice(1).map(function (item) {
+    return item.split(/<\/item>/i)[0];
+  });
   return items.slice(0, ARTICLES_PER_SOURCE).map(function (item) {
     return {
       source: feed.name,
@@ -76,13 +57,9 @@ function parseRssItems(xml, feed) {
 }
 
 function parseAtomItems(xml, feed) {
-  const entries = xml
-    .split(/<entry\b[^>]*>/i)
-    .slice(1)
-    .map(function (entry) {
-      return entry.split(/<\/entry>/i)[0];
-    });
-
+  const entries = xml.split(/<entry\b[^>]*>/i).slice(1).map(function (entry) {
+    return entry.split(/<\/entry>/i)[0];
+  });
   return entries.slice(0, ARTICLES_PER_SOURCE).map(function (entry) {
     return {
       source: feed.name,
@@ -95,10 +72,7 @@ function parseAtomItems(xml, feed) {
 }
 
 function parseFeed(xml, feed) {
-  const parsed = xml.includes("<entry")
-    ? parseAtomItems(xml, feed)
-    : parseRssItems(xml, feed);
-
+  const parsed = xml.includes("<entry") ? parseAtomItems(xml, feed) : parseRssItems(xml, feed);
   return parsed.filter(function (article) {
     return article.title && article.link;
   });
@@ -111,28 +85,19 @@ async function fetchFeed(feed) {
       "Accept": "application/rss+xml, application/atom+xml, application/xml, text/xml"
     }
   });
-
   if (!response.ok) {
     throw new Error(feed.name + " returned " + response.status);
   }
-
   const xml = await response.text();
   return parseFeed(xml, feed);
 }
 
 async function handleCyberNews() {
   const results = await Promise.allSettled(FEEDS.map(fetchFeed));
-
   const articles = results
-    .filter(function (result) {
-      return result.status === "fulfilled";
-    })
-    .flatMap(function (result) {
-      return result.value;
-    })
-    .sort(function (a, b) {
-      return new Date(b.date || 0) - new Date(a.date || 0);
-    });
+    .filter(function (result) { return result.status === "fulfilled"; })
+    .flatMap(function (result) { return result.value; })
+    .sort(function (a, b) { return new Date(b.date || 0) - new Date(a.date || 0); });
 
   return new Response(JSON.stringify(articles), {
     headers: {
@@ -146,11 +111,19 @@ async function handleCyberNews() {
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
-
+    if (url.pathname === "/api/ping") {
+      return new Response(JSON.stringify({
+        status: "ok",
+        message: "Worker is running",
+        path: url.pathname,
+        time: new Date().toISOString()
+      }), {
+        headers: { "Content-Type": "application/json; charset=utf-8" }
+      });
+    }
     if (url.pathname === "/api/cyber-news") {
       return handleCyberNews();
     }
-
     return env.ASSETS.fetch(request);
   }
 };
