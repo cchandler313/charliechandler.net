@@ -3,262 +3,79 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Charlie Chandler | Network Engineer & Cybersecurity</title>
-  <meta name="description" content="Charlie Chandler - Network Engineer building toward cybersecurity, SOC analysis, threat monitoring, and defensive operations." />
-  <style>
-    :root {
-      --bg: #050812;
-      --panel: rgba(8, 17, 31, 0.94);
-      --panel-soft: rgba(255, 255, 255, 0.045);
-      --text: #d8f7e1;
-      --muted: #9bb4be;
-      --line: rgba(116, 255, 169, 0.22);
-      --green: #72f59b;
-      --yellow: #ffd166;
-      --blue: #8bd3ff;
-      --red: #ff6b6b;
-      --shadow: rgba(0, 0, 0, 0.55);
-    }
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background:
-        radial-gradient(circle at top left, rgba(52, 211, 153, 0.11), transparent 34rem),
-        radial-gradient(circle at bottom right, rgba(59, 130, 246, 0.10), transparent 34rem),
-        var(--bg);
-      color: var(--text);
-      font-family: "Cascadia Code", "Fira Code", Consolas, monospace;
-    }
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      background: repeating-linear-gradient(to bottom, rgba(255,255,255,0.025), rgba(255,255,255,0.025) 1px, transparent 1px, transparent 4px);
-      opacity: 0.32;
-      mix-blend-mode: overlay;
-    }
-    a { color: var(--blue); text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    .shell { width: min(1160px, calc(100% - 2rem)); margin: 0 auto; padding: 1.25rem 0 4rem; position: relative; }
-    .topbar { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1rem; color: var(--muted); }
-    .brand { color: var(--text); letter-spacing: 0.04em; }
-    .nav { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: flex-end; }
-    .terminal {
-      border: 1px solid var(--line);
-      border-radius: 20px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.04), transparent 7rem), var(--panel);
-      box-shadow: 0 0 0 1px rgba(255,255,255,0.035) inset, 0 24px 80px var(--shadow), 0 0 45px rgba(96,255,150,0.18);
-      overflow: hidden;
-    }
-    .titlebar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.85rem 1rem; background: rgba(13,24,41,0.92); border-bottom: 1px solid var(--line); }
-    .dots { display: flex; gap: 0.45rem; }
-    .dot { width: 0.75rem; height: 0.75rem; border-radius: 999px; background: var(--muted); }
-    .red { background: #ff5f56; } .yellow { background: #ffbd2e; } .green { background: #27c93f; }
-    .path { color: var(--muted); font-size: 0.85rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .terminal-body { padding: clamp(1rem, 2.5vw, 2rem); }
-    .hero { padding: 1rem 0 1.5rem; border-bottom: 1px dashed var(--line); }
-    .kicker { color: var(--green); margin: 0 0 0.75rem; font-size: 0.95rem; }
-    h1 { font-size: clamp(2.2rem, 8vw, 5.2rem); line-height: 0.95; margin: 0 0 1rem; letter-spacing: -0.06em; }
-    .subtitle { max-width: 900px; color: var(--muted); font-size: clamp(1rem, 2vw, 1.2rem); line-height: 1.7; margin: 0; }
-    .quick-tags { display: flex; flex-wrap: wrap; gap: 0.65rem; margin-top: 1.25rem; }
-    .tag { border: 1px solid var(--line); border-radius: 999px; padding: 0.45rem 0.7rem; color: var(--muted); background: rgba(255,255,255,0.035); font-size: 0.86rem; }
-    .section { padding: 2rem 0; border-bottom: 1px dashed var(--line); }
-    .section:last-child { border-bottom: 0; }
-    .command { display: flex; align-items: center; flex-wrap: wrap; gap: 0.38rem; margin-bottom: 1rem; color: var(--text); line-height: 1.7; }
-    .user { color: var(--yellow); font-weight: 700; }
-    .host { color: var(--green); font-weight: 700; }
-    .folder { color: var(--blue); font-weight: 700; }
-    h2 { margin: 0 0 1rem; color: var(--green); font-size: clamp(1.25rem, 3vw, 1.75rem); }
-    .section-intro { color: var(--muted); line-height: 1.65; max-width: 900px; margin: 0 0 1.2rem; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; }
-    .card { border: 1px solid var(--line); border-radius: 16px; background: var(--panel-soft); padding: 1.15rem; }
-    .card p { color: var(--muted); line-height: 1.65; margin: 0; }
-    .card-title { display: block; color: var(--green); margin-bottom: 0.65rem; font-weight: 700; }
-    .contact-list { display: grid; gap: 0.75rem; }
-    .contact-item { display: flex; flex-wrap: wrap; gap: 0.5rem; color: var(--muted); }
-    .label { color: var(--green); }
-    .news-status { color: var(--muted); margin: 0 0 1rem; min-height: 1.5rem; }
-    .news-status.ok { color: var(--green); }
-    .news-status.err { color: var(--red); }
-    .news-toolbar { display: flex; flex-wrap: wrap; gap: 0.65rem; margin-bottom: 1.25rem; }
-    .news-toolbar button { border: 1px solid var(--line); border-radius: 999px; background: rgba(255,255,255,0.045); color: var(--text); font: inherit; padding: 0.5rem 0.8rem; cursor: pointer; }
-    .news-toolbar button:hover, .news-toolbar button.active { background: rgba(114,245,155,0.12); }
-    .news-output { display: grid; gap: 1rem; }
-    .source-group { border: 1px solid var(--line); border-radius: 16px; background: rgba(0,0,0,0.16); overflow: hidden; }
-    .source-heading { display: flex; justify-content: space-between; gap: 1rem; padding: 0.85rem 1rem; background: rgba(255,255,255,0.035); border-bottom: 1px solid var(--line); color: var(--green); }
-    .source-heading span:last-child { color: var(--muted); font-size: 0.86rem; }
-    .article { padding: 1rem; border-bottom: 1px dashed rgba(116,255,169,0.16); animation: printLine 360ms ease both; }
-    .article:last-child { border-bottom: 0; }
-    @keyframes printLine { from { opacity: 0; transform: translateY(0.35rem); } to { opacity: 1; transform: translateY(0); } }
-    .article-meta { color: var(--muted); font-size: 0.82rem; margin-bottom: 0.4rem; }
-    .article h3 { margin: 0 0 0.45rem; font-size: clamp(1rem, 2vw, 1.15rem); line-height: 1.4; color: var(--text); }
-    .article p { color: #abc4ca; line-height: 1.55; margin: 0 0 0.75rem; }
-    .disclaimer { margin-top: 1.25rem; color: var(--muted); line-height: 1.6; font-size: 0.86rem; }
-    .cursor { display: inline-block; width: 0.6rem; height: 1.05rem; transform: translateY(0.18rem); background: var(--text); animation: blink 1s steps(2, start) infinite; }
-    @keyframes blink { 50% { opacity: 0; } }
-    @media (max-width: 720px) {
-      .topbar { align-items: flex-start; flex-direction: column; }
-      .nav { justify-content: flex-start; }
-      .path { max-width: 13rem; }
-      .source-heading { flex-direction: column; }
-    }
-  </style>
+  <title>Charlie Chandler | Network Engineering, Cybersecurity & Infrastructure</title>
+  <meta name="description" content="Charlie Chandler is a network engineer focused on infrastructure, cybersecurity, self-hosting, automation, and practical security projects." />
+  <meta name="theme-color" content="#070b12" />
+  <meta property="og:title" content="Charlie Chandler | Network Engineering & Cybersecurity" />
+  <meta property="og:description" content="Personal technology hub for network engineering, cybersecurity projects, lab notes, and current security intelligence." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://charliechandler.net/" />
+  <link rel="stylesheet" href="/assets/site.css" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Charlie Chandler","url":"https://charliechandler.net","sameAs":["https://github.com/cchandler313","https://www.linkedin.com/in/charliechandler/"]}</script>
 </head>
 <body>
-  <main class="shell">
-    <header class="topbar">
-      <div class="brand">charliechandler.net</div>
-      <nav class="nav" aria-label="Main navigation">
-        <a href="#about">About</a>
-        <a href="#learning">Learning</a>
-        <a href="#cyber-news">Cyber News</a>
-        <a href="#contact">Contact</a>
-      </nav>
-    </header>
-
-    <div class="terminal">
-      <div class="titlebar">
-        <div class="dots" aria-hidden="true">
-          <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="site-shell nav-wrap">
+      <a class="brand" href="/"><span class="brand-mark" aria-hidden="true"></span><span>Charlie Chandler</span></a>
+      <button class="nav-toggle" type="button" data-nav-toggle aria-label="Toggle navigation" aria-expanded="false"><span></span></button>
+      <nav class="site-nav" data-site-nav aria-label="Primary navigation">
+        <a href="/" aria-current="page">Home</a><a href="/about/">About</a><a href="/security/">Security Wire</a><a href="/projects/">Projects</a><a href="/lab/">Lab Notes</a>
+        <div class="nav-socials">
+          <a class="icon-link" href="https://github.com/cchandler313" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><svg viewBox="0 0 24 24"><path d="M12 .7a11.5 11.5 0 0 0-3.64 22.4c.58.1.79-.25.79-.56v-2.2c-3.22.7-3.9-1.37-3.9-1.37-.53-1.33-1.29-1.68-1.29-1.68-1.05-.72.08-.7.08-.7 1.17.08 1.78 1.2 1.78 1.2 1.04 1.77 2.72 1.26 3.38.96.1-.75.4-1.26.74-1.55-2.57-.3-5.28-1.29-5.28-5.73 0-1.27.45-2.3 1.2-3.12-.12-.3-.52-1.48.11-3.08 0 0 .98-.31 3.17 1.19A11 11 0 0 1 12 6.07c.98 0 1.95.13 2.86.39 2.2-1.5 3.17-1.19 3.17-1.19.63 1.6.23 2.78.11 3.08.75.82 1.2 1.85 1.2 3.12 0 4.45-2.71 5.43-5.3 5.72.42.36.79 1.07.79 2.16v3.2c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .7Z"/></svg></a>
+          <a class="icon-link" href="https://www.linkedin.com/in/charliechandler/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M5.34 7.5H1.67V22h3.67V7.5ZM3.5 1.99A2.14 2.14 0 1 0 3.5 6.27a2.14 2.14 0 0 0 0-4.28ZM22.33 13.68c0-4.37-2.33-6.4-5.44-6.4-2.5 0-3.62 1.38-4.24 2.35V7.5H8.98V22h3.67v-7.18c0-1.9.36-3.75 2.73-3.75 2.34 0 2.37 2.19 2.37 3.87V22h3.67l.91-8.32Z"/></svg></a>
+          <a class="icon-link" href="mailto:cchandler313@gmail.com" aria-label="Email Charlie"><svg viewBox="0 0 24 24"><path d="M2.5 4.5h19A1.5 1.5 0 0 1 23 6v12a1.5 1.5 0 0 1-1.5 1.5h-19A1.5 1.5 0 0 1 1 18V6a1.5 1.5 0 0 1 1.5-1.5Zm0 2v.34L12 13l9.5-6.16V6.5h-19Zm19 10.86V9.22L12.54 15a1 1 0 0 1-1.08 0L2.5 9.22v8.14h19Z"/></svg></a>
         </div>
-        <div class="path">charlie@portfolio: ~/security/home</div>
-      </div>
-
-      <div class="terminal-body">
-        <section class="hero" aria-label="Intro">
-          <p class="kicker">charlie@socbox:~$ whoami</p>
-          <h1>Charlie Chandler</h1>
-          <p class="subtitle">Network Engineer with enterprise infrastructure experience, building deeper cybersecurity, SOC analysis, threat monitoring, and defensive operations skills.</p>
-          <div class="quick-tags" aria-label="Core focus areas">
-            <span class="tag">Network Engineering</span><span class="tag">Infrastructure Support</span><span class="tag">Log Review</span><span class="tag">SOC Learning</span><span class="tag">Home Lab</span>
-          </div>
-        </section>
-
-        <section id="about" class="section">
-          <div class="command"><span class="user">charlie</span><span>@</span><span class="host">socbox</span><span>:</span><span class="folder">~/profile</span><span>$</span><span>cat about-me.txt</span></div>
-          <h2>About Me</h2>
-          <p class="section-intro">I’m a Network Engineer with enterprise infrastructure experience supporting connectivity, stability, and secure access across business environments.</p>
-          <div class="grid">
-            <article class="card"><span class="card-title">Infrastructure Background</span><p>I support routers, switches, firewalls, VPNs, wireless networks, user connectivity, and network-related troubleshooting.</p></article>
-            <article class="card"><span class="card-title">Security Direction</span><p>I am building deeper cybersecurity skills with a focus on SOC analysis, log review, threat monitoring, vulnerability awareness, and defensive operations.</p></article>
-            <article class="card"><span class="card-title">Hands-On Practice</span><p>My learning includes Linux practice, home lab work, network visibility, security tooling, and practical blue-team concepts.</p></article>
-          </div>
-        </section>
-
-        <section id="learning" class="section">
-          <div class="command"><span class="user">charlie</span><span>@</span><span class="host">socbox</span><span>:</span><span class="folder">~/training</span><span>$</span><span>cat currently-learning.txt</span></div>
-          <h2>Currently Learning</h2>
-          <div class="grid">
-            <article class="card"><span class="card-title">SOC Workflows</span><p>Alert triage, event review, investigation notes, escalation paths, and how analysts turn raw activity into useful findings.</p></article>
-            <article class="card"><span class="card-title">Linux & Security Tools</span><p>Linux command-line practice, log files, network commands, packet capture concepts, and security-focused lab work.</p></article>
-            <article class="card"><span class="card-title">Threat & Vulnerability Awareness</span><p>CVEs, CVSS, exploited vulnerabilities, common attack paths, and how current security news connects to defensive work.</p></article>
-          </div>
-        </section>
-
-        <section id="cyber-news" class="section">
-          <div class="command"><span class="user">charlie</span><span>@</span><span class="host">socbox</span><span>:</span><span class="folder">~/feeds</span><span>$</span><span id="typed-command"></span><span class="cursor" aria-hidden="true"></span></div>
-          <h2>Cyber News</h2>
-          <p class="section-intro">Latest cybersecurity headlines pulled from trusted RSS sources. Each item links back to the original publisher.</p>
-          <p id="news-status" class="news-status">waiting for operator input...</p>
-          <div id="news-toolbar" class="news-toolbar" aria-label="News source filters"><button class="active" data-source="all">all</button></div>
-          <div id="news-output" class="news-output" aria-live="polite"></div>
-          <p class="disclaimer">This section aggregates headlines and short excerpts from third-party cybersecurity news sources. Articles, trademarks, and content belong to their original publishers. Click through to the original source to read the full story.</p>
-        </section>
-
-        <section id="contact" class="section">
-          <div class="command"><span class="user">charlie</span><span>@</span><span class="host">socbox</span><span>:</span><span class="folder">~/contact</span><span>$</span><span>cat contact.txt</span></div>
-          <h2>Contact</h2>
-          <div class="card contact-list">
-            <div class="contact-item"><span class="label">Email:</span><a href="mailto:cchandler313@gmail.com">cchandler313@gmail.com</a></div>
-            <div class="contact-item"><span class="label">LinkedIn:</span><a href="https://www.linkedin.com/in/charliechandler/" target="_blank" rel="noopener noreferrer">linkedin.com/in/charliechandler</a></div>
-            <div class="contact-item"><span class="label">GitHub:</span><a href="https://github.com/cchandler313" target="_blank" rel="noopener noreferrer">github.com/cchandler313</a></div>
-            <div class="contact-item"><span class="label">Website:</span><a href="https://charliechandler.net">charliechandler.net</a></div>
-          </div>
-        </section>
-      </div>
+      </nav>
     </div>
+  </header>
+
+  <main id="main">
+    <section class="hero">
+      <div class="site-shell hero-grid">
+        <div>
+          <p class="eyebrow">Network Engineering · Cybersecurity · Infrastructure</p>
+          <h1><span class="gradient-text">Charlie Chandler.</span><br />I build systems that hold up.</h1>
+          <p class="hero-copy">I design, build, secure, troubleshoot, and occasionally break infrastructure on purpose so I can understand it better.</p>
+          <div class="hero-actions"><a class="button button-primary" href="/about/">About me</a><a class="button" href="/projects/">View projects</a></div>
+        </div>
+        <aside class="hero-status" aria-label="Current focus">
+          <span class="status-label">Current focus</span>
+          <strong><span class="status-dot"></span>Security automation, threat detection & infrastructure security</strong>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section section-border">
+      <div class="site-shell">
+        <div class="section-heading reveal"><div><p class="section-kicker">Explore</p><h2>A small site with useful doors.</h2><p class="section-copy">The homepage stays simple. The deeper pages carry the projects, notes, background, and security intelligence.</p></div></div>
+        <div class="card-grid">
+          <a class="card reveal" href="/about/"><span class="card-number">01</span><span class="card-arrow">↗</span><h3>About Me</h3><p>Experience, focus areas, infrastructure background, and the technologies I work with.</p></a>
+          <a class="card reveal" href="/security/"><span class="card-number">02</span><span class="card-arrow">↗</span><h3>Security Wire</h3><p>A live cybersecurity news feed aggregated from trusted industry and research sources.</p></a>
+          <a class="card reveal" href="/projects/"><span class="card-number">03</span><span class="card-arrow">↗</span><h3>Projects</h3><p>Security labs, network architecture, automation, self-hosting, and practical build writeups.</p></a>
+          <a class="card reveal" href="/lab/"><span class="card-number">04</span><span class="card-arrow">↗</span><h3>Lab Notes</h3><p>Short technical notes for fixes, experiments, commands, odd behavior, and things worth remembering.</p></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-border">
+      <div class="site-shell">
+        <div class="section-heading reveal"><div><p class="section-kicker">Security Wire</p><h2>Latest security intelligence.</h2><p class="section-copy">Fresh headlines from the live aggregator. Full articles always open on the original publisher.</p></div><a class="text-link" href="/security/">Open Security Wire →</a></div>
+        <div class="security-strip">
+          <div class="news-list reveal" data-latest-security></div>
+          <article class="feature-card reveal">
+            <span class="tag live">Featured project</span>
+            <h3>Zero-Trust Security Lab</h3>
+            <p>Segmenting network zones, hardening remote access, centralizing telemetry, and documenting the security decisions along the way.</p>
+            <div class="tag-row"><span class="tag">Network</span><span class="tag">Identity</span><span class="tag">Logging</span><span class="tag progress">In progress</span></div>
+            <div class="hero-actions"><a class="button" href="/projects/zero-trust-network/">View project</a></div>
+          </article>
+        </div>
+      </div>
+    </section>
   </main>
 
-  <script>
-    const command = "rss-pull --sources cybersec --limit 5 --format terminal";
-    const typedCommand = document.getElementById("typed-command");
-    const statusLine = document.getElementById("news-status");
-    const output = document.getElementById("news-output");
-    const toolbar = document.getElementById("news-toolbar");
-    let allArticles = [];
-
-    function escapeHtml(value = "") {
-      return String(value).replace(/[&<>"']/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char]));
-    }
-    function formatDate(value) {
-      if (!value) return "date unavailable";
-      const date = new Date(value);
-      if (Number.isNaN(date.getTime())) return value;
-      return date.toLocaleString(undefined, { month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit" });
-    }
-    function groupBySource(articles) {
-      return articles.reduce((groups, article) => {
-        if (!groups[article.source]) groups[article.source] = [];
-        groups[article.source].push(article);
-        return groups;
-      }, {});
-    }
-    function renderFilters(articles) {
-      const sources = [...new Set(articles.map(article => article.source))].sort();
-      toolbar.innerHTML = '<button class="active" data-source="all">all</button>' + sources.map(source => '<button data-source="' + escapeHtml(source) + '">' + escapeHtml(source) + '</button>').join("");
-      toolbar.querySelectorAll("button").forEach(button => {
-        button.addEventListener("click", () => {
-          toolbar.querySelectorAll("button").forEach(btn => btn.classList.remove("active"));
-          button.classList.add("active");
-          renderArticles(button.dataset.source);
-        });
-      });
-    }
-    function renderEmptyState() {
-      output.innerHTML = '<div class="source-group"><div class="source-heading"><span>[empty]</span><span>0 articles</span></div><article class="article"><h3>No cyber news returned.</h3><p>The Worker responded, but no RSS articles were returned. Try again later or check the feed list.</p></article></div>';
-    }
-    function renderArticles(source = "all") {
-      const filtered = source === "all" ? allArticles : allArticles.filter(article => article.source === source);
-      if (!filtered.length) { renderEmptyState(); return; }
-      const groups = groupBySource(filtered);
-      output.innerHTML = Object.entries(groups).map(([sourceName, articles]) =>
-        '<div class="source-group"><div class="source-heading"><span>[source] ' + escapeHtml(sourceName) + '</span><span>' + articles.length + ' article' + (articles.length === 1 ? "" : "s") + '</span></div>' +
-        articles.map((article, index) =>
-          '<article class="article" style="animation-delay:' + (index * 60) + 'ms"><div class="article-meta">' + escapeHtml(formatDate(article.date)) + ' · Source: ' + escapeHtml(article.source) + '</div><h3>' + escapeHtml(article.title) + '</h3><p>' + escapeHtml(article.summary || "No summary provided by source.") + '</p><a href="' + escapeHtml(article.link) + '" target="_blank" rel="noopener noreferrer">open original at ' + escapeHtml(article.source) + ' ↗</a></article>'
-        ).join("") + '</div>'
-      ).join("");
-    }
-    async function typeCommand() {
-      typedCommand.textContent = "";
-      for (const char of command) {
-        typedCommand.textContent += char;
-        await new Promise(resolve => setTimeout(resolve, 22 + Math.random() * 20));
-      }
-    }
-    async function loadCyberNews() {
-      statusLine.textContent = "executing command...";
-      await new Promise(resolve => setTimeout(resolve, 500));
-      statusLine.textContent = "connecting to RSS sources...";
-      try {
-        const response = await fetch("/api/cyber-news");
-        if (!response.ok) throw new Error("Feed API returned an error.");
-        allArticles = await response.json();
-        renderFilters(allArticles);
-        renderArticles();
-        const now = new Date().toLocaleString(undefined, { month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit" });
-        statusLine.textContent = "complete: loaded " + allArticles.length + " articles from " + new Set(allArticles.map(article => article.source)).size + " sources · last updated " + now;
-        statusLine.className = "news-status ok";
-      } catch (error) {
-        statusLine.textContent = "error: unable to load RSS feeds right now";
-        statusLine.className = "news-status err";
-        output.innerHTML = '<div class="source-group"><div class="source-heading"><span>[error]</span><span>feed unavailable</span></div><article class="article"><h3>Could not fetch cyber news.</h3><p>Check the Worker deployment and test /api/cyber-news directly.</p></article></div>';
-      }
-    }
-    async function boot() { await typeCommand(); await loadCyberNews(); }
-    boot();
-  </script>
+  <footer class="site-footer"><div class="site-shell footer-grid"><span>© <span data-year></span> Charlie Chandler</span><div class="footer-links"><a href="/about/">About</a><a href="/security/">Security Wire</a><a href="/projects/">Projects</a><a href="/lab/">Lab Notes</a></div></div></footer>
+  <script src="/assets/site.js" defer></script>
 </body>
 </html>
