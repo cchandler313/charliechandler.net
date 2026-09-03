@@ -115,6 +115,28 @@
     link.target = '_blank';
     link.rel = 'noopener noreferrer';
 
+    const imageWrap = document.createElement('div');
+    imageWrap.className = 'article-image-wrap';
+    if (article.image) {
+      const image = document.createElement('img');
+      image.className = 'article-image';
+      image.src = article.image;
+      image.alt = '';
+      image.loading = 'lazy';
+      image.decoding = 'async';
+      image.referrerPolicy = 'no-referrer';
+      image.addEventListener('error', () => {
+        image.remove();
+        imageWrap.appendChild(buildFallback(article.source));
+      }, { once: true });
+      imageWrap.appendChild(image);
+    } else {
+      imageWrap.appendChild(buildFallback(article.source));
+    }
+
+    const body = document.createElement('div');
+    body.className = 'article-body';
+
     const metaRow = document.createElement('div');
     metaRow.className = 'article-meta';
     const cat = document.createElement('span');
@@ -127,18 +149,28 @@
     title.textContent = article.title;
     const summary = document.createElement('p');
     summary.textContent = article.summary || 'Open the original source for the full story.';
-    const tags = document.createElement('div');
-    tags.className = 'tag-row';
+
+    const footer = document.createElement('div');
+    footer.className = 'tag-row';
     const source = document.createElement('span');
     source.className = 'tag';
     source.textContent = article.source;
-    tags.appendChild(source);
     const arrow = document.createElement('span');
     arrow.className = 'card-arrow';
     arrow.setAttribute('aria-hidden', 'true');
     arrow.textContent = '↗';
-    link.append(metaRow, title, summary, tags, arrow);
+    footer.append(source, arrow);
+
+    body.append(metaRow, title, summary, footer);
+    link.append(imageWrap, body);
     return link;
+  }
+
+  function buildFallback(sourceName) {
+    const fallback = document.createElement('div');
+    fallback.className = 'article-image-fallback';
+    fallback.textContent = sourceName || 'Security Wire';
+    return fallback;
   }
 
   function relativeTime(value) {
