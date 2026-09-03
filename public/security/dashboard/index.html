@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Security Dashboard | Charlie Chandler</title>
+  <meta name="description" content="Live cybersecurity dashboard combining CISA known exploited vulnerabilities with current Security Wire intelligence." />
+  <meta name="theme-color" content="#070b12" />
+  <link rel="stylesheet" href="/assets/site.css" />
+  <link rel="stylesheet" href="/assets/dashboard.css" />
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header"><div class="site-shell nav-wrap"><a class="brand" href="/"><span class="brand-mark"></span><span>Charlie Chandler</span></a><button class="nav-toggle" type="button" data-nav-toggle aria-label="Toggle navigation" aria-expanded="false"><span></span></button><nav class="site-nav" data-site-nav><a href="/">Home</a><a href="/about/">About</a><a href="/security/" aria-current="page">Security Wire</a><a href="/projects/">Projects</a><a href="/lab/">Lab Notes</a></nav></div></header>
+<main id="main">
+<section class="page-hero dashboard-hero"><div class="site-shell"><div class="breadcrumb"><a href="/">Home</a> / <a href="/security/">Security Wire</a> / Dashboard</div><p class="eyebrow">Live security radar</p><h1>Security Dashboard.</h1><p>A fast operational view of known exploited vulnerabilities and current reporting across the security ecosystem. Built for signal, not decorative gauges.</p><div class="hero-actions"><a class="button" href="/security/">Open Security Wire</a><button class="button button-primary" type="button" data-dashboard-refresh>Refresh data</button></div></div></section>
+<section class="section section-border"><div class="site-shell">
+<div class="dashboard-stats">
+<div class="dashboard-stat"><span>KEV catalog</span><strong data-kev-total>...</strong><small>Known exploited vulnerabilities</small></div>
+<div class="dashboard-stat"><span>Added · 30 days</span><strong data-kev-recent>...</strong><small>New CISA KEV entries</small></div>
+<div class="dashboard-stat"><span>Due · 14 days</span><strong data-kev-due>...</strong><small>Near-term remediation deadlines</small></div>
+<div class="dashboard-stat"><span>Live stories</span><strong data-news-total>...</strong><small>Security Wire headlines</small></div>
+</div>
+<p class="dashboard-health" data-dashboard-health>Loading current security data...</p>
+<div class="dashboard-grid">
+<section class="dashboard-panel dashboard-panel-wide"><div class="dashboard-panel-head"><div><p class="section-kicker">Known exploited</p><h2>Newest CISA KEV additions.</h2></div><a class="text-link" href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener noreferrer">Open CISA catalog ↗</a></div><div class="kev-list" data-kev-list><div class="empty-state">Loading KEV catalog...</div></div></section>
+<section class="dashboard-panel"><div class="dashboard-panel-head"><div><p class="section-kicker">Deadline watch</p><h2>Due soon.</h2></div></div><div class="deadline-list" data-deadline-list><div class="empty-state">Loading deadlines...</div></div></section>
+<section class="dashboard-panel"><div class="dashboard-panel-head"><div><p class="section-kicker">Exploit chatter</p><h2>Zero day & vulnerability reporting.</h2></div></div><div class="signal-list" data-vuln-news><div class="empty-state">Loading headlines...</div></div></section>
+<section class="dashboard-panel"><div class="dashboard-panel-head"><div><p class="section-kicker">Threat activity</p><h2>Ransomware & extortion.</h2></div></div><div class="signal-list" data-ransomware-news><div class="empty-state">Loading headlines...</div></div></section>
+<section class="dashboard-panel dashboard-panel-wide"><div class="dashboard-panel-head"><div><p class="section-kicker">Vendor concentration</p><h2>Who is appearing in KEV.</h2></div></div><div class="vendor-bars" data-vendor-bars><div class="empty-state">Loading vendor data...</div></div></section>
+</div>
+<p class="source-health">CISA KEV reflects vulnerabilities with evidence of active exploitation. Security Wire headlines are discovery links to the original publishers and should not be treated as independent verification by this site.</p>
+</div></section>
+</main>
+<footer class="site-footer"><div class="site-shell footer-grid"><span>© <span data-year></span> Charlie Chandler</span><div class="footer-links"><a href="/security/">Security Wire</a><a href="/security-policy/">Security Policy</a><a href="mailto:charlie@charliechandler.net">Contact</a></div></div></footer>
+<script src="/assets/site.js" defer></script><script src="/assets/dashboard.js" defer></script>
+</body></html>
