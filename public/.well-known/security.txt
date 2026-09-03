@@ -1,0 +1,5 @@
+Contact: mailto:charlie@charliechandler.net
+Expires: 2027-09-03T23:59:59Z
+Canonical: https://charliechandler.net/.well-known/security.txt
+Policy: https://charliechandler.net/security-policy/
+Preferred-Languages: en
