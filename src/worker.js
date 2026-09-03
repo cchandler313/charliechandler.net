@@ -52,11 +52,15 @@ function stripHtml(value = '') {
     .trim();
 }
 
-function getTagValue(item, tag) {
+function getTagRaw(item, tag) {
   const escaped = tag.replace(':', '\\:');
   const regex = new RegExp(`<${escaped}[^>]*>([\\s\\S]*?)<\\/${escaped}>`, 'i');
   const match = item.match(regex);
-  return match ? stripHtml(match[1]) : '';
+  return match ? match[1] : '';
+}
+
+function getTagValue(item, tag) {
+  return stripHtml(getTagRaw(item, tag));
 }
 
 function getAtomLink(item) {
@@ -64,6 +68,43 @@ function getAtomLink(item) {
   if (alternate) return decodeEntities(alternate[1]).trim();
   const href = item.match(/<link[^>]+href=["']([^"']+)["'][^>]*>/i);
   return href ? decodeEntities(href[1]).trim() : '';
+}
+
+function cleanImageUrl(value = '') {
+  const url = decodeEntities(value).trim();
+  if (!/^https?:\/\//i.test(url)) return null;
+  try {
+    const parsed = new URL(url);
+    return parsed.toString();
+  } catch {
+    return null;
+  }
+}
+
+function extractImage(block) {
+  const candidates = [];
+  const attrPatterns = [
+    /<media:content\b[^>]*\burl=["']([^"']+)["'][^>]*>/gi,
+    /<media:thumbnail\b[^>]*\burl=["']([^"']+)["'][^>]*>/gi,
+    /<enclosure\b[^>]*\burl=["']([^"']+)["'][^>]*\btype=["']image\/[^"]+["'][^>]*>/gi,
+    /<enclosure\b[^>]*\btype=["']image\/[^"]+["'][^>]*\burl=["']([^"']+)["'][^>]*>/gi
+  ];
+
+  for (const regex of attrPatterns) {
+    let match;
+    while ((match = regex.exec(block))) candidates.push(match[1]);
+  }
+
+  const richContent = [getTagRaw(block, 'content:encoded'), getTagRaw(block, 'description'), getTagRaw(block, 'content'), getTagRaw(block, 'summary')].join(' ');
+  const imageRegex = /<img\b[^>]*\bsrc=["']([^"']+)["'][^>]*>/gi;
+  let imageMatch;
+  while ((imageMatch = imageRegex.exec(richContent))) candidates.push(imageMatch[1]);
+
+  for (const candidate of candidates) {
+    const cleaned = cleanImageUrl(candidate);
+    if (cleaned) return cleaned;
+  }
+  return null;
 }
 
 function normalizeDate(value) {
@@ -85,7 +126,8 @@ function articleFromRss(item, feed) {
     title: getTagValue(item, 'title'),
     link: getTagValue(item, 'link') || getTagValue(item, 'guid'),
     summary: (getTagValue(item, 'description') || getTagValue(item, 'content:encoded')).slice(0, 320),
-    date: normalizeDate(getTagValue(item, 'pubDate') || getTagValue(item, 'dc:date'))
+    date: normalizeDate(getTagValue(item, 'pubDate') || getTagValue(item, 'dc:date')),
+    image: extractImage(item)
   };
   article.category = classify(article);
   return article;
@@ -97,7 +139,8 @@ function articleFromAtom(entry, feed) {
     title: getTagValue(entry, 'title'),
     link: getAtomLink(entry),
     summary: (getTagValue(entry, 'summary') || getTagValue(entry, 'content')).slice(0, 320),
-    date: normalizeDate(getTagValue(entry, 'updated') || getTagValue(entry, 'published'))
+    date: normalizeDate(getTagValue(entry, 'updated') || getTagValue(entry, 'published')),
+    image: extractImage(entry)
   };
   article.category = classify(article);
   return article;
@@ -122,7 +165,7 @@ async function fetchFeed(feed) {
     const response = await fetch(feed.url, {
       signal: controller.signal,
       headers: {
-        'User-Agent': 'charliechandler.net Security Wire/1.0 (+https://charliechandler.net/security/)',
+        'User-Agent': 'charliechandler.net Security Wire/1.1 (+https://charliechandler.net/security/)',
         'Accept': 'application/rss+xml, application/atom+xml, application/xml, text/xml;q=0.9, */*;q=0.5'
       }
     });
